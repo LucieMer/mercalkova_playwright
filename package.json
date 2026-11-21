@@ -25,5 +25,8 @@
     "eslint-plugin-playwright": "^2.12.2",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.73.0"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.6.0"
   }
 }
