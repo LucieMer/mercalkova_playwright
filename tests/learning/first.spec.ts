@@ -1,8 +1,20 @@
 import { test } from "@playwright/test";
+import { PmToolLoginPage } from "../../pages/PmToolLoginPage";
 
-test("First test", async ({ page }) => {
-  await page.goto("http://tredgate.com/pmtool/");
-  await page.locator("#username").fill("pw_academy");
-  await page.locator("#password").fill("Playwright321!");
-  await page.locator('[type="submit"]').click();
+const username = process.env.PMTOOL_USERNAME;
+const password = process.env.PMTOOL_PASSWORD;
+
+test("signs in to PM Tool", async ({ page }) => {
+  if (!username || !password) {
+    test.skip(
+      true,
+      "Set PMTOOL_USERNAME and PMTOOL_PASSWORD to run this test.",
+    );
+    return;
+  }
+
+  const loginPage = new PmToolLoginPage(page);
+  await loginPage.open();
+  await loginPage.login(username, password);
+  await loginPage.expectAuthenticated();
 });
