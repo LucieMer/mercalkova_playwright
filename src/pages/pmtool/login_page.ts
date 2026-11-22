@@ -1,4 +1,6 @@
 import { Page, Locator } from "@playwright/test";
+import { DashboardPage } from "./dashboard_page.ts";
+import { LostPasswordPage } from "./lost_password_page.ts";
 
 export class LoginPage {
   private readonly page: Page;
@@ -22,27 +24,33 @@ export class LoginPage {
 
   async open() {
     await this.page.goto(this.url);
+    return this;
   }
 
   async fillUsername(username: string) {
     await this.usernameInput.fill(username);
+    return this;
   }
 
   async fillPassword(password: string) {
     await this.passwordInput.fill(password);
+    return this;
   }
 
   async clickLoginButton() {
     await this.loginButton.click();
+    return new DashboardPage(this.page);
   }
 
   async login(username: string, password: string) {
     await this.fillUsername(username);
     await this.fillPassword(password);
     await this.clickLoginButton();
+    return new DashboardPage(this.page);
   }
 
   async clickPasswordForgotten() {
     await this.passwordForgottenButton.click();
+    return new LostPasswordPage(this.page);
   }
 }
