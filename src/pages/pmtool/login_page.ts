@@ -1,10 +1,12 @@
-import { Page, Locator, test, expect } from "@playwright/test";
+// src/pages/pmtool/login_page.ts
+
+import { expect, Locator, Page, test } from "@playwright/test";
 import { DashboardPage } from "./dashboard_page.ts";
 import { LostPasswordPage } from "./lost_password_page.ts";
 
 export class LoginPage {
   private readonly page: Page;
-  private readonly url = "http://tredgate.com/pmtool/"; // ? Použijeme jen na prvním PO (LoginPage), odkud budeme PM tool spouštět
+  private readonly url = "https://tredgate.com/pmtool"; // ? Použijeme jen na prvním PO (LoginPage), odkud budeme PMTool otevírat
   private readonly usernameInput: Locator;
   private readonly passwordInput: Locator;
   private readonly loginButton: Locator;
@@ -13,7 +15,7 @@ export class LoginPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.usernameInput = page.locator("#username");
+    this.usernameInput = page.locator("//input[@id='username']");
     this.passwordInput = page.locator("#password");
     this.loginButton = page.locator('[type="submit"]');
     this.passwordForgottenButton = page.locator("#forget_password");
@@ -24,7 +26,8 @@ export class LoginPage {
   // Například: typeUsername - jeden krok, login - sdružení více kroků
   // Atomické metody používáme, když danou funkcionalitu testujeme a sdružující metody například pro preconditions jiných testů
 
-  async open() {
+  // ? Typová anotace `Promise<this>` není povinná, určí se implicitně -> doporučení: dávat ke složitějším metodám
+  async open(): Promise<this> {
     await this.page.goto(this.url);
     return this;
   }
@@ -39,7 +42,7 @@ export class LoginPage {
     return this;
   }
 
-  async clickLoginButton() {
+  async clickLogin() {
     await this.loginButton.click();
     return new DashboardPage(this.page);
   }
@@ -48,7 +51,7 @@ export class LoginPage {
     await test.step("Login to Pmtool", async () => {
       await this.fillUsername(username);
       await this.fillPassword(password);
-      await this.clickLoginButton();
+      await this.clickLogin();
     });
 
     return new DashboardPage(this.page);
