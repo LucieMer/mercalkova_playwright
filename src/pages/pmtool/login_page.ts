@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import { Page, Locator, test } from "@playwright/test";
 import { DashboardPage } from "./dashboard_page.ts";
 import { LostPasswordPage } from "./lost_password_page.ts";
 
@@ -43,9 +43,12 @@ export class LoginPage {
   }
 
   async login(username: string, password: string) {
-    await this.fillUsername(username);
-    await this.fillPassword(password);
-    await this.clickLoginButton();
+    await test.step("Login to Pmtool", async () => {
+      await this.fillUsername(username);
+      await this.fillPassword(password);
+      await this.clickLoginButton();
+    });
+    
     return new DashboardPage(this.page);
   }
 
