@@ -113,7 +113,7 @@ test.describe("Atomic Tests", () => {
     const fileName = "upload_file.txt";
     const filePath = path.resolve(
       import.meta.dirname,
-      "../../../src/assets/" + fileName,
+      "../../../assets/" + fileName,
     );
     await addProjectModal.uploadFile(filePath);
     await expect(addProjectModal.firstAttachmentName).toHaveText(fileName);
